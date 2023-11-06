@@ -1,1 +1,4 @@
 # security-verificator
+
+
+vsce package

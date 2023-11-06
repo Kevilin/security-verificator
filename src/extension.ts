@@ -1,26 +1,34 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import axios from 'axios';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    console.log('Congratulations, your extension "security-verificator" is now active!');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "security-verificator" is now active!');
+    let disposable = vscode.commands.registerCommand('security-verificator.checarSeguranca', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor) {
+            const document = editor.document;
+            const text = document.getText();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('security-verificator.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Security Verificator!');
-	});
+            try {
+                // Fazendo uma requisição POST para a API
+                const response = await axios.post('https://chatgpt-api.kmr.dev.br/api/check', {
+					origem: "teste",
+					entrada: text
+                });
 
-	context.subscriptions.push(disposable);
+                const mensagem = response.data.retorno;
+                
+                vscode.window.showInformationMessage(mensagem);
+            } catch (error: any) {
+                vscode.window.showErrorMessage('Erro ao fazer a requisição para a API: ' + error.message);
+            }
+        } else {
+            vscode.window.showErrorMessage('Nenhum editor aberto para obter o conteúdo do arquivo.');
+        }
+    });
+    context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
