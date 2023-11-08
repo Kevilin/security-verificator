@@ -3,7 +3,7 @@
   "displayName": "Security Verificator",
   "description": "Previna vulnerabilidades de segurança em qualquer linguagem de programação.",
   "publisher": "KevilinRodrigues",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.83.0"
   },

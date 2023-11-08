@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import axios from 'axios';
 
 export function activate(context: vscode.ExtensionContext) {
+    const outputChannel = vscode.window.createOutputChannel('Resultado da Verificação');
+
     let disposable = vscode.commands.registerCommand('extension.verificarVulnerabilidades', async () => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
@@ -16,8 +18,10 @@ export function activate(context: vscode.ExtensionContext) {
                     });
     
                     const mensagem = response.data.retorno;
-                    
-                    vscode.window.showInformationMessage(mensagem);
+
+                    outputChannel.clear(); // Limpar a saída anterior
+                    outputChannel.appendLine(mensagem);
+                    outputChannel.show();
                 } catch (error: any) {
                     vscode.window.showErrorMessage('Erro ao fazer a requisição para a API: ' + error.message);
                 }
