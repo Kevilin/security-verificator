@@ -3,7 +3,7 @@
   "displayName": "Security Verificator",
   "description": "Previna vulnerabilidades de segurança em qualquer linguagem de programação.",
   "publisher": "KevilinRodrigues",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.83.0"
   },
@@ -11,15 +11,34 @@
     "Other"
   ],
   "icon": "images/logo.png",
-  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "security-verificator.checarSeguranca",
-        "title": "Checar segurança"
+        "command": "extension.verificarVulnerabilidades",
+        "title": "Verificar vulnerabilidades"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "extension.verificarVulnerabilidades",
+          "group": "1_modification",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Verificar vulnerabilidades",
+      "properties": {
+        "security-verificator.habilitarMenuDeContexto": {
+          "type": "boolean",
+          "default": false,
+          "description": "Retorna as dicas de segurança da API do ChatGPT."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
